@@ -6,6 +6,7 @@ var bodyParser = require("body-parser");
 var webpush = require("web-push");
 const fs = require("fs");
 var https = require("https");
+const fileUpload = require("express-fileupload");
 var app = express();
 initialSetup.createRoles();
 initialSetup.createConfidenceLevel();
@@ -14,25 +15,25 @@ const { ExpressPeerServer } = require("peer");
 const http = require("http").Server(app); //creamos un servidor http a partir de la libreria express
 const serverPeerjs = require("http").Server(app);
 const io = require("socket.io")(http, {
-    cors: {
-        origin: process.env.FRONT_END_ORIGIN || "http://localhost:4200",
-        methods: ["GET", "POST"],
-        transports: ["websocket", "polling"],
-        credentials: true,
-    },
-    allowEIO3: true,
+  cors: {
+    origin: process.env.FRONT_END_ORIGIN || "http://localhost:4200",
+    methods: ["GET", "POST"],
+    transports: ["websocket", "polling"],
+    credentials: true,
+  },
+  allowEIO3: true,
 });
 
 //Push notifications
 const vapidKeys = {
-    publicKey: process.env.PUBLIC_KEY,
-    privateKey: process.env.PRIVATE_KEY,
+  publicKey: process.env.PUBLIC_KEY,
+  privateKey: process.env.PRIVATE_KEY,
 };
 
 webpush.setVapidDetails(
-    "mailto:example@yourdomain.org",
-    vapidKeys.publicKey,
-    vapidKeys.privateKey
+  "mailto:example@yourdomain.org",
+  vapidKeys.publicKey,
+  vapidKeys.privateKey
 );
 
 // Cargar rutas
@@ -54,6 +55,7 @@ var face_camera = require("./routes/face_camera");
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(fileUpload());
 
 // Configurar cabeceras y cors
 
@@ -61,15 +63,15 @@ const cors = require("cors");
 app.use(cors());
 
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    //res.header("Access-Control-Allow-Credentials", false);
-    res.header(
-        "Access-Control-Allow-Headers",
-        "Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method"
-    );
-    res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
-    res.header("Allow", "GET, POST, OPTIONS, PUT, DELETE");
-    next();
+  res.header("Access-Control-Allow-Origin", "*");
+  //res.header("Access-Control-Allow-Credentials", false);
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+  res.header("Allow", "GET, POST, OPTIONS, PUT, DELETE");
+  next();
 });
 
 //streaming de video
@@ -101,20 +103,20 @@ app.use("/api", face_camera);
 });*/
 
 io.on("connection", (socket) => {
-    const id_handshake = socket.id;
-    console.log("uniendose a la llamada");
-    console.log(`Nuevo dispositivo conectado: ${id_handshake}`);
-    socket.on("join", (data) => {
-        const roomName = data.roomName;
-        console.log("entrando al cuarto", roomName);
-        socket.join(roomName);
-        socket.to(roomName).emit("new-user", data);
+  const id_handshake = socket.id;
+  console.log("uniendose a la llamada");
+  console.log(`Nuevo dispositivo conectado: ${id_handshake}`);
+  socket.on("join", (data) => {
+    const roomName = data.roomName;
+    console.log("entrando al cuarto", roomName);
+    socket.join(roomName);
+    socket.to(roomName).emit("new-user", data);
 
-        socket.on("disconnect", () => {
-            console.log("saliendo de la llamada: ", id_handshake);
-            socket.emit("bye-user", data);
-        });
+    socket.on("disconnect", () => {
+      console.log("saliendo de la llamada: ", id_handshake);
+      socket.emit("bye-user", data);
     });
+  });
 });
 
 /*let serverPeerjs
@@ -130,7 +132,7 @@ if(process.env.KEYS_PATH && process.env.CERT_PATH){
 }*/
 
 var hostedServer = serverPeerjs.listen(process.env.PEERjS_PORT, () => {
-    console.log(`Peerjs server running on port: ${process.env.PEERjS_PORT}`);
+  console.log(`Peerjs server running on port: ${process.env.PEERjS_PORT}`);
 });
 
 //var hostedServer = serverPeerjs.listen();

@@ -16,4 +16,19 @@ api.get(
   FaceCameraController.getFaceByCameraAndDate
 );
 
+api.get(
+  "/get-faces-by-camara-and-day/:camera_id",
+  [md_auth.ensureAuth, md_auth_admin.isAdmin],
+  FaceCameraController.getFaceByCameraAndDay
+);
+api.get(
+  "/get-faces-by-camara-and-week/:camera_id",
+  [md_auth.ensureAuth, md_auth_admin.isAdmin],
+  FaceCameraController.getFaceByCameraAndWeek
+);
+api.get(
+  "/get-faces-by-camara-and-month/:camera_id",
+  [md_auth.ensureAuth, md_auth_admin.isAdmin],
+  FaceCameraController.getFaceByCameraAndMonth
+);
 module.exports = api;
