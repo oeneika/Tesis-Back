@@ -8,33 +8,22 @@ exports.getFaceByCameraAndDate = async (req, res) => {
   //   console.log(req.query);
   try {
     let faceImage = await FaceImage.find()
+      .where("moment")
+      .gte(moment(req.query.initialDate, "DD-MM-YYYY").toDate())
+      .lte(moment(req.query.finalDate, "DD-MM-YYYY").toDate())
       .populate({
         path: "image",
         populate: {
           path: "video",
           populate: {
+            where: { _id: req.params.camera_id },
             path: "camera",
           },
         },
       })
       .populate("face");
 
-    let initialDate = moment(req.query.initialDate, "DD-MM-YYYY").toDate();
-    let finalDate = moment(req.query.finalDate, "DD-MM-YYYY").toDate();
-    let filterArrayByCameraAndDates = faceImage.filter(
-      (elem) =>
-        elem.image?.video?.camera?.id === req.params.camera_id &&
-        initialDate <= elem.moment &&
-        elem.moment <= finalDate
-    );
-    let newArray = filterArrayByCameraAndDates.map((elem) => ({
-      id: elem.id,
-      facialExpression: elem.facialExpression,
-      face: elem.face,
-      moment: elem.moment,
-    }));
-
-    res.json(newArray);
+    res.json(faceImage);
   } catch (error) {
     console.error(error);
   }
