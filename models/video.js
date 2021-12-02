@@ -9,20 +9,6 @@ var VideoSchema = Schema({
     required: true,
     trim: true,
   },
-  // moment_ini: {
-  //   type: String,
-  //   required: true,
-  //   trim: true,
-  // },
-  // moment_final: {
-  //   type: String,
-  //   required: true,
-  //   trim: true,
-  // },
-  // url_drive: {
-  //   type: String,
-  //   trim: true,
-  // },
   size: {
     type: String,
     required: true,
@@ -33,12 +19,7 @@ var VideoSchema = Schema({
     required: true,
     trim: true,
   },
-  // quality: {
-  //   type: String,
-  //   required: true,
-  //   trim: true,
-  // },
-  videoName: {
+  file: {
     type: String,
     required: true,
     trim: true,

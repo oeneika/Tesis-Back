@@ -60,8 +60,9 @@ exports.getVideo = async (req, res) => {
 
 const subirArchivo = (files, extensionesValidas = ["mp4"], name) => {
   return new Promise((resolve, reject) => {
-    const { archivo } = files;
-    const nombreCortado = archivo.name.split(".");
+    const { file } = files;
+
+    const nombreCortado = file.name.split(".");
     const extension = nombreCortado[nombreCortado.length - 1];
 
     // Validar la extension
@@ -74,12 +75,12 @@ const subirArchivo = (files, extensionesValidas = ["mp4"], name) => {
     const nombreTemp = name + "." + extension;
     const uploadPath = path.join(__dirname, "../videos/", nombreTemp);
 
-    archivo.mv(uploadPath, (err) => {
+    file.mv(uploadPath, (err) => {
       if (err) {
         reject(err);
       }
 
-      resolve({ nombre: nombreTemp, size: archivo.size });
+      resolve({ nombre: nombreTemp, size: file.size });
     });
   });
 };
@@ -102,14 +103,10 @@ exports.saveVideo = async (req, res) => {
 
     video.name = newName;
 
-    const { nombre, size } = await subirArchivo(
-      req.files,
-      undefined,
-      video.name
-    );
+    const { nombre, size } = await subirArchivo(req.files, undefined, newName);
     video.size = size;
     video.camera = params.camera;
-    video.videoName = nombre;
+    video.file = nombre;
     const pathVideo = path.join(__dirname, `../videos/${nombre}`);
 
     await getVideoDurationInSeconds(pathVideo)

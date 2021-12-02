@@ -29,43 +29,38 @@ exports.getFaceByCameraAndDate = async (req, res) => {
   }
 };
 exports.getFaceByCameraAndDay = async (req, res) => {
-  //   console.log(req.query);
   try {
+    let currentDate = moment().format("DD-MM-YYYY");
+
     let faceImage = await FaceImage.find()
+      .where("moment")
+      .equals(moment(currentDate, "DD-MM-YYYY").toDate())
       .populate({
         path: "image",
         populate: {
           path: "video",
           populate: {
+            where: { _id: req.params.camera_id },
             path: "camera",
           },
         },
       })
       .populate("face");
-    let byDay = moment(req.query.byDay, "DD-MM-YYYY").toDate();
 
-    let filterArrayByCameraAndDay = faceImage.filter(
-      (elem) =>
-        elem.image?.video?.camera?.id === req.params.camera_id &&
-        moment(elem?.moment).format() === moment(byDay).format()
-    );
-
-    let newArray = filterArrayByCameraAndDay.map((elem) => ({
-      id: elem.id,
-      facialExpression: elem.facialExpression,
-      face: elem.face,
-      moment: elem.moment,
-    }));
-
-    res.json(newArray);
+    res.json(faceImage);
   } catch (error) {
     console.error(error);
   }
 };
 exports.getFaceByCameraAndWeek = async (req, res) => {
-  //   console.log(req.query);
   try {
+    let now = moment(new Date()).toDate();
+    const endOfWeek = moment(now).endOf("week").add(1, "d");
+    const firstDayOfWeek = moment(now).startOf("week").add(1, "d");
     let faceImage = await FaceImage.find()
+      .where("moment")
+      .gte(moment(firstDayOfWeek, "DD-MM-YYYY").toDate())
+      .lte(moment(endOfWeek, "DD-MM-YYYY").toDate())
       .populate({
         path: "image",
         populate: {
@@ -77,34 +72,20 @@ exports.getFaceByCameraAndWeek = async (req, res) => {
       })
       .populate("face");
 
-    let now = moment(new Date()).toDate();
-    const endOfWeek = moment(now).endOf("week").add(1, "d");
-    const firstDayOfWeek = moment(now).startOf("week").add(1, "d");
-
-    let filterArrayByCameraAndWeek = faceImage.filter(
-      (elem) =>
-        elem.image?.video?.camera?.id === req.params.camera_id &&
-        elem.moment &&
-        moment(firstDayOfWeek).format() <= moment(elem.moment).format() &&
-        moment(elem.moment).format() <= moment(endOfWeek).format()
-    );
-
-    let newArray = filterArrayByCameraAndWeek.map((elem) => ({
-      id: elem.id,
-      facialExpression: elem.facialExpression,
-      face: elem.face,
-      moment: elem.moment,
-    }));
-
-    res.json(newArray);
+    res.json(faceImage);
   } catch (error) {
     console.error(error);
   }
 };
 exports.getFaceByCameraAndMonth = async (req, res) => {
-  //   console.log(req.query);
   try {
+    let now = moment(new Date()).toDate();
+    const endOfMonth = moment(now).endOf("month");
+    const firstDayOfMonth = moment(now).startOf("month");
     let faceImage = await FaceImage.find()
+      .where("moment")
+      .gte(moment(firstDayOfMonth, "DD-MM-YYYY").toDate())
+      .lte(moment(endOfMonth, "DD-MM-YYYY").toDate())
       .populate({
         path: "image",
         populate: {
@@ -116,26 +97,7 @@ exports.getFaceByCameraAndMonth = async (req, res) => {
       })
       .populate("face");
 
-    let now = moment(new Date()).toDate();
-    const endOfMonth = moment(now).endOf("month");
-    const firstDayOfMonth = moment(now).startOf("month");
-
-    let filterArrayByCameraAndMonth = faceImage.filter(
-      (elem) =>
-        elem.image?.video?.camera?.id === req.params.camera_id &&
-        elem.moment &&
-        moment(firstDayOfMonth).format() <= moment(elem.moment).format() &&
-        moment(elem.moment).format() <= moment(endOfMonth).format()
-    );
-
-    let newArray = filterArrayByCameraAndMonth.map((elem) => ({
-      id: elem.id,
-      facialExpression: elem.facialExpression,
-      face: elem.face,
-      moment: elem.moment,
-    }));
-
-    res.json(newArray);
+    res.json(faceImage);
   } catch (error) {
     console.error(error);
   }

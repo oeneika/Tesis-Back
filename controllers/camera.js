@@ -61,7 +61,9 @@ exports.saveCamera = async (req, res) => {
             .send({ message: "Error al guardar la cámara", err: err });
         } else {
           if (!cameraStored) {
-            res.status(404).send({ message: "La cámara no ha sido guardada" });
+            return res
+              .status(404)
+              .send({ message: "La cámara no ha sido guardada" });
           } else {
             if (collaborators.length > 0) {
               collaborators.filter(function (collaborator) {

@@ -56,7 +56,7 @@ const saveUser = async (req, res) => {
                   administratorId: userStored._id,
                 },
               });
-              res.status(200).send({
+              return res.status(200).send({
                 token: jwt.createToken(userStored),
                 secret: userStored.temp_secreto,
                 id: userStored._id,
@@ -64,7 +64,7 @@ const saveUser = async (req, res) => {
             }
           });
         } else {
-          res
+          return res
             .status(200)
             .send({ message: "Usuario ya existe y no puede registrarse" });
         }

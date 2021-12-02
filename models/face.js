@@ -28,6 +28,11 @@ var FaceSchema = Schema({
     type: String,
     trim: true,
   },
+  unknown: {
+    type: Boolean,
+    trim: true,
+    default: false,
+  },
   confidenceLevels: {
     type: Schema.ObjectId,
     ref: "ConfidenceLevel",

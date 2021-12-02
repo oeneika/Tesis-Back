@@ -59,10 +59,8 @@ exports.saveImage = async (req, res) => {
     let image = new Image();
     let params = req.body;
 
-    if (params.name && params.url && params.size) {
+    if (params.name) {
       image.name = params.name;
-      image.url = params.url;
-      image.size = params.size;
       image.video = params.video;
 
       image.save((err, imageStored) => {
@@ -76,6 +74,8 @@ exports.saveImage = async (req, res) => {
           }
         }
       });
+    } else {
+      res.json({ message: "El nombre es requerido" });
     }
   } catch (error) {
     console.error(error);

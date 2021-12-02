@@ -10,15 +10,6 @@ var ImageSchema = Schema({
     trim: true,
   },
 
-  url_drive: {
-    type: String,
-    trim: true,
-  },
-  size: {
-    type: String,
-    required: true,
-    trim: true,
-  },
   video: {
     type: Schema.ObjectId,
     ref: "Video",
