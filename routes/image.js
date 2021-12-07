@@ -8,36 +8,36 @@ var api = express.Router();
 const md_auth = require("../middleware/authenticated");
 const md_auth_admin = require("../middleware/is_admin");
 
-var {check} = require("express-validator");
+var { check } = require("express-validator");
 
 api.post(
-	"/image",
-	[md_auth.ensureAuth, md_auth_admin.isAdmin],
-	ImageController.saveImage
+  "/image",
+  [md_auth.ensureAuth, md_auth_admin.isAdmin],
+  ImageController.saveImage
 );
 
 api.put(
-	"/update-image/:id",
-	[md_auth.ensureAuth, md_auth_admin.isAdmin],
-	ImageController.UpdateImage
+  "/update-image/:id",
+  [md_auth.ensureAuth, md_auth_admin.isAdmin],
+  ImageController.UpdateImage
 );
 
 api.get(
-	"/get-images",
-	[md_auth.ensureAuth, md_auth_admin.isAdmin],
-	ImageController.getImages
+  "/get-images",
+  [md_auth.ensureAuth, md_auth_admin.isAdmin],
+  ImageController.getImages
 );
 
 api.get(
-	"/get-image",
-	[md_auth.ensureAuth, md_auth_admin.isAdmin],
-	ImageController.getImage
+  "/get-image/:id",
+  [md_auth.ensureAuth, md_auth_admin.isAdmin],
+  ImageController.getImage
 );
 
 api.delete(
-	"/image/:id",
-	[md_auth.ensureAuth, md_auth_admin.isAdmin],
-	ImageController.DeleteImage
+  "/image/:id",
+  [md_auth.ensureAuth, md_auth_admin.isAdmin],
+  ImageController.DeleteImage
 );
 
 module.exports = api;

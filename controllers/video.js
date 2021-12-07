@@ -4,6 +4,7 @@ const path = require("path");
 var jwt = require("jwt-simple");
 const moment = require("moment");
 const { getVideoDurationInSeconds } = require("get-video-duration");
+const fs = require("fs");
 
 exports.getVideos = async (req, res) => {
   try {
@@ -42,17 +43,15 @@ exports.getVideos = async (req, res) => {
 exports.getVideo = async (req, res) => {
   try {
     var videoId = req.params.id;
-    Video.findById(videoId, (err, video) => {
-      if (err) {
-        res.status(500).send({ message: "Error en la peticion" });
-      } else {
-        if (!video) {
-          res.status(404).send({ message: "El video no existe" });
-        } else {
-          res.status(200).send({ video });
-        }
-      }
-    });
+    const video = await Video.findById(videoId);
+
+    if (!video) {
+      return res.status(404).send({ message: "El video no existe" });
+    }
+    const pathVideo = path.join(__dirname, "../videos", video.file);
+    if (fs.existsSync(pathVideo)) {
+      return res.sendFile(pathVideo);
+    }
   } catch (error) {
     console.error(error);
   }

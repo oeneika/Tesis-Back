@@ -15,6 +15,11 @@ var ImageSchema = Schema({
     ref: "Video",
     required: true,
   },
+  file: {
+    type: String,
+    required: true,
+    trim: true,
+  },
 });
 
 module.exports = mongoose.model("Image", ImageSchema);

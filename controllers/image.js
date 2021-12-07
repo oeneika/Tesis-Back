@@ -1,5 +1,9 @@
 // Modelos
 let Image = require("../models/image");
+var jwt = require("jwt-simple");
+const moment = require("moment");
+const path = require("path");
+const fs = require("fs");
 
 exports.getImages = async (req, res) => {
   try {
@@ -37,32 +41,67 @@ exports.getImages = async (req, res) => {
 
 exports.getImage = async (req, res) => {
   try {
-    var imagesId = req.params.id;
-    Image.findById(imagesId, (err, images) => {
-      if (err) {
-        res.status(500).send({ message: "Error en la peticion" });
-      } else {
-        if (!images) {
-          res.status(404).send({ message: "La imagen no existe" });
-        } else {
-          res.status(200).send({ images });
-        }
-      }
-    });
+    var imageId = req.params.id;
+    const image = await Image.findById(imageId);
+
+    if (!image) {
+      return res.status(404).send({ message: "La imagen no existe" });
+    }
+    const pathImagen = path.join(__dirname, "../imagenes", image.file);
+    if (fs.existsSync(pathImagen)) {
+      return res.sendFile(pathImagen);
+    }
   } catch (error) {
     console.error(error);
   }
+};
+
+const subirArchivo = (files, extensionesValidas = ["jpg", "png"], name) => {
+  return new Promise((resolve, reject) => {
+    const { imagen } = files;
+
+    const nombreCortado = imagen.name.split(".");
+    const extension = nombreCortado[nombreCortado.length - 1];
+
+    // Validar la extension
+    if (!extensionesValidas.includes(extension)) {
+      return reject(
+        `La extensión ${extension} no es permitida - ${extensionesValidas}`
+      );
+    }
+
+    const nombreTemp = name + "." + extension;
+    const uploadPath = path.join(__dirname, "../imagenes/", nombreTemp);
+
+    imagen.mv(uploadPath, (err) => {
+      if (err) {
+        reject(err);
+      }
+
+      resolve({ nombre: nombreTemp, size: imagen.size });
+    });
+  });
 };
 
 exports.saveImage = async (req, res) => {
   try {
     let image = new Image();
     let params = req.body;
+    const token = req.headers.authorization;
+    const decoded = jwt.decode(
+      token,
+      "clave_secreta_del_curso_de_angular4avanzado"
+    );
 
     if (params.name) {
+      let nameOfImage =
+        decoded.sub + params.name + "fecha-" + moment().format();
+      const regex = /:/g;
+      const newName = nameOfImage.replace(regex, "-");
+      const { nombre } = await subirArchivo(req.files, undefined, newName);
       image.name = params.name;
       image.video = params.video;
-
+      image.file = nombre;
       image.save((err, imageStored) => {
         if (err) {
           res.status(500).send({ message: "Error al guardar la imagen" });
