@@ -10,55 +10,47 @@ const md_auth_admin = require("../middleware/is_admin");
 
 var { check } = require("express-validator");
 
-var multipart = require("connect-multiparty");
-var md_upload = multipart({ uploadDir: "./uploads/face" });
+//var multipart = require("connect-multiparty");
+//var md_upload = multipart({ uploadDir: "./uploads/face" });
 
 api.post(
-  "/save-face",
-  [md_auth.ensureAuth, md_auth_admin.isAdmin],
-  FaceController.guardarFace
+    "/save-face", [md_auth.ensureAuth, md_auth_admin.isAdmin],
+    FaceController.guardarFace
 );
 
 api.put(
-  "/update-face/:id",
-  [md_auth.ensureAuth, md_auth_admin.isAdmin],
-  FaceController.UpdateFace
+    "/update-face/:id", [md_auth.ensureAuth, md_auth_admin.isAdmin],
+    FaceController.UpdateFace
 );
 
 api.get(
-  "/faces",
-  [md_auth.ensureAuth, md_auth_admin.isAdmin],
-  FaceController.getFaces
+    "/faces", [md_auth.ensureAuth, md_auth_admin.isAdmin],
+    FaceController.getFaces
 );
 
 api.get(
-  "/face/:id",
-  [md_auth.ensureAuth, md_auth_admin.isAdmin],
-  FaceController.getFace
+    "/face/:id", [md_auth.ensureAuth, md_auth_admin.isAdmin],
+    FaceController.getFace
 );
 
 api.get(
-  "/face-by-confidence-level/:id",
-  [md_auth.ensureAuth, md_auth_admin.isAdmin],
-  FaceController.getFaceByConfidenceLevel
+    "/face-by-confidence-level/:id", [md_auth.ensureAuth, md_auth_admin.isAdmin],
+    FaceController.getFaceByConfidenceLevel
 );
 
 api.get(
-  "/face-by-user/:id",
-  [md_auth.ensureAuth, md_auth_admin.isAdmin],
-  FaceController.getFaceByUser
+    "/face-by-user/:id", [md_auth.ensureAuth, md_auth_admin.isAdmin],
+    FaceController.getFaceByUser
 );
 
 api.delete(
-  "/face/:id",
-  [md_auth.ensureAuth, md_auth_admin.isAdmin],
-  FaceController.DeleteFace
+    "/face/:id", [md_auth.ensureAuth, md_auth_admin.isAdmin],
+    FaceController.DeleteFace
 );
 
 api.post(
-  "/upload-image-face/:id",
-  [md_auth.ensureAuth, md_auth_admin.isAdmin, md_upload],
-  FaceController.UploadImage
+    "/upload-image-face/:id", [md_auth.ensureAuth, md_auth_admin.isAdmin],
+    FaceController.UploadImage
 );
 
 api.get("/get-image-face/:imageFile", FaceController.GetImageFile);
