@@ -61,7 +61,9 @@ exports.createCollaborator = async (req, res) => {
         });
 
         const collaborator = collaborators.find(
-          (elem) => elem.UserCollaborator?.toString() == userFind._id.toString()
+          (elem) =>
+            elem.UserCollaborator &&
+            elem.UserCollaborator.toString() == userFind._id.toString()
         );
 
         if (!collaborator) {

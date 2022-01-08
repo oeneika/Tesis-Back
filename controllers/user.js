@@ -14,8 +14,6 @@ var jwt = require("../services/jwt");
 const user = require("../models/user");
 const twofactor = require("node-2fa");
 
-const CamaraController = require("../controllers/camera");
-
 const saveUser = async (req, res) => {
   try {
     var user = new User();
@@ -51,11 +49,6 @@ const saveUser = async (req, res) => {
                 .status(404)
                 .send({ message: "no se ha registrado el usuario" });
             } else {
-              CamaraController.saveCamera({
-                body: {
-                  administratorId: userStored._id,
-                },
-              });
               return res.status(200).send({
                 token: jwt.createToken(userStored),
                 secret: userStored.temp_secreto,

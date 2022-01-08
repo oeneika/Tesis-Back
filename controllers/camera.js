@@ -2,7 +2,7 @@
 let Camera = require("../models/camera");
 let UserCamera = require("../models/user_camara");
 let User = require("../models/user");
-let collaboratorController = require("../controllers/collaborator");
+
 exports.getCameras = async (req, res) => {
   try {
     const cameras = await Camera.find().sort("name");
