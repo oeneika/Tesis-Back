@@ -60,7 +60,7 @@ const saveUser = async(req, res) => {
                     });
                 } else {
                     return res
-                        .status(200)
+                        .status(404)
                         .send({ message: "Usuario ya existe y no puede registrarse" });
                 }
             });
