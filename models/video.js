@@ -14,11 +14,6 @@ var VideoSchema = Schema({
     required: true,
     trim: true,
   },
-  duration: {
-    type: String,
-    required: true,
-    trim: true,
-  },
   file: {
     type: String,
     required: true,

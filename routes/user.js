@@ -10,8 +10,8 @@ const md_auth = require("../middleware/authenticated");
 const md_auth_admin = require("../middleware/is_admin");
 const md_auth_collaborator = require("../middleware/is_collaborator");
 
-var multipart = require("connect-multiparty");
-var md_upload = multipart({ uploadDir: "./uploads/users" });
+//var multipart = require("connect-multiparty");
+//var md_upload = multipart({ uploadDir: "./uploads/users" });
 
 var { check } = require("express-validator");
 
@@ -25,7 +25,7 @@ api.put(
 );
 api.get("/get-user/:id", [md_auth.ensureAuth], UserController.getUser);
 api.post(
-    "/upload-image-user/:id", [md_auth.ensureAuth, md_upload],
+    "/upload-image-user/:id", [md_auth.ensureAuth],
     UserController.uploadImage
 );
 api.get("/get-image-file/:imageFile", UserController.getImageFile);

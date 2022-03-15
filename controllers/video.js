@@ -13,31 +13,18 @@ exports.getVideos = async (req, res) => {
   } catch (error) {
     console.error(error);
   }
-  // try {
-  // 	if (req.params.page) {
-  // 		var page = req.params.page;
-  // 	} else {
-  // 		var page = 1;
-  // 	}
+};
 
-  // 	var itemsPerPage = 3;
-
-  // 	Video.find()
-  // 		.sort("name")
-  // 		.paginate(page, itemsPerPage, function (err, videos, total) {
-  // 			if (err) {
-  // 				res.status(500).send({message: "Error en la peticion"});
-  // 			} else {
-  // 				if (!videos) {
-  // 					res.status(404).send({message: "No hay videos"});
-  // 				} else {
-  // 					return res.status(200).send({total_items: total, videos: videos});
-  // 				}
-  // 			}
-  // 		});
-  // } catch (error) {
-  // 	console.error(error);
-  // }
+exports.getVideosByAdministrator = async (req, res) => {
+  try {
+    var adminId = req.params ? req.params.id : req.body.UserAdmin;
+    const videos = await Video.find({UserAdmin: adminId}).distinct(
+			"videoId"
+		);
+    return res.json(videos);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 exports.getVideo = async (req, res) => {
@@ -108,14 +95,6 @@ exports.saveVideo = async (req, res) => {
     video.file = nombre;
     const pathVideo = path.join(__dirname, `../videos/${nombre}`);
 
-    await getVideoDurationInSeconds(pathVideo)
-      .then((duration) => {
-        video.duration = duration;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
     video.save((err, videoStored) => {
       if (err) {
         res
@@ -166,3 +145,18 @@ exports.DeleteVideo = async (req, res) => {
     res.status(500).send({ message: "Error eliminando video" });
   }
 };
+
+
+exports.getVideoFile = async(req, res) => {
+  var videoFile = req.params.videoFile;
+
+  var path_file = "./videos/" + videoFile;
+
+  fs.access(path_file, fs.constants.F_OK, (err) => {
+      if (!err) {
+          res.sendFile(path.resolve(path_file));
+      } else {
+          res.status(200).send({ message: "La imagen no existe en el servidor" });
+      }
+  });
+}

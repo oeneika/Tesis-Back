@@ -65,23 +65,22 @@ exports.saveCamera = async (req, res) => {
               .status(404)
               .send({ message: "La cámara no ha sido guardada" });
           } else {
-            if (collaborators.length > 0) {
-              collaborators.filter(function (collaborator) {
-                if (collaborator !== null) {
-                  let user_camera = new UserCamera();
-                  user_camera.cameraId = cameraStored._id;
-                  user_camera.UserAdmin = params.administratorId;
-                  user_camera.UserCollaborator = collaborator._id;
-                  user_camera.save();
-                }
-              });
-            } else {
-              let user_camera = new UserCamera();
-              user_camera.cameraId = cameraStored._id;
-              user_camera.UserAdmin = params.administratorId;
-              user_camera.UserCollaborator = null;
-              user_camera.save();
-            }
+
+            let user_camera = new UserCamera();
+
+            user_camera.cameraId = cameraStored._id;
+            user_camera.UserAdmin = params.administratorId;
+            user_camera.UserCollaborator = null;
+            user_camera.save((err, userCameraStored) => {
+              if (err) {
+                return res
+                  .status(500)
+                  .send({ message: "Error al guardar la userCamera", err: err });
+              }else{
+                console.log(userCameraStored);
+                camera.user_camera = userCameraStored._id;
+              }
+            });
 
             return res.status(200).send(camera);
           }

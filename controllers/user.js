@@ -235,12 +235,19 @@ function uploadImage(req, res) {
     var file_name = "No subido...";
 
     if (req.files) {
-        var file_path = req.files.image.path;
+        var file_path = "uploads\\users\\" + req.files.image.name;
         var file_split = file_path.split("\\");
         var file_name = file_split[2];
 
         var ext_split = file_name.split(".");
-        var file_ext = ext_split[1];
+        var file_ext = ext_split[1].toLowerCase();
+
+        let sampleFile = req.files.image;
+        let uploadPath = path.join(
+          __dirname,
+          `../uploads/users/`,
+          req.files.image.name
+        );
 
         if (file_ext == "png" || file_ext == "jpg" || file_ext == "gif") {
             if (userId != req.user.sub) {
@@ -258,7 +265,13 @@ function uploadImage(req, res) {
                                 .status(404)
                                 .send({ message: "No se ha podido actualizar el usuario" });
                         } else {
-                            res.status(200).send({ user: userUpdated, image: file_name });
+
+                            sampleFile.mv(uploadPath, function (err) {
+                                if (err) return res.status(500).send(err);
+                                return res
+                                  .status(200)
+                                  .send({ user: userUpdated, image: file_name });
+                              });
                         }
                     }
                 }
@@ -283,6 +296,7 @@ function uploadImage(req, res) {
 
 function getImageFile(req, res) {
     var imageFile = req.params.imageFile;
+
     var path_file = "./uploads/users/" + imageFile;
 
     fs.access(path_file, fs.constants.F_OK, (err) => {
@@ -293,6 +307,8 @@ function getImageFile(req, res) {
         }
     });
 }
+
+
 
 const getUserToken = async(req, res) => {
     try {

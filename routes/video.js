@@ -21,6 +21,7 @@ api.put(
   [md_auth.ensureAuth, md_auth_admin.isAdmin],
   VideoController.UpdateVideo
 );
+api.get("/get-video-file/:videoFile", VideoController.getVideoFile);
 
 api.get(
   "/get-videos",
