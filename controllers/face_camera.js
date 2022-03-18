@@ -7,7 +7,10 @@ let moment = require("moment");
 exports.getFaceByCameraAndDate = async (req, res) => {
   //   console.log(req.query);
   try {
-    let faceImage = await FaceImage.find()
+    console.log(req.params.camera_id);
+    let faceImage = await FaceImage.find({
+      "image.video.camera._id":req.params.camera_id
+    })
       .where("moment")
       .gte(moment(req.query.initialDate, "DD-MM-YYYY").toDate())
       .lte(moment(req.query.finalDate, "DD-MM-YYYY").toDate())
@@ -16,8 +19,8 @@ exports.getFaceByCameraAndDate = async (req, res) => {
         populate: {
           path: "video",
           populate: {
-            where: { _id: req.params.camera_id },
             path: "camera",
+            //match: { _id: req.params.camera_id },
           },
         },
       })
