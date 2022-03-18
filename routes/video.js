@@ -28,6 +28,11 @@ api.get(
   [md_auth.ensureAuth, md_auth_admin.isAdmin],
   VideoController.getVideos
 );
+api.get(
+  "/get-videos-by-user/:id",
+  [md_auth.ensureAuth, md_auth_admin.isAdmin],
+  VideoController.getVideosByUser
+);
 
 api.get(
   "/get-video/:id",

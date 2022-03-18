@@ -5,7 +5,19 @@ let User = require("../models/user");
 
 exports.getCameras = async (req, res) => {
   try {
-    const cameras = await Camera.find().sort("name");
+    const cameras = await Camera.find().populate("UserCamera").sort("name");
+    return res.json(cameras);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+exports.getCamerasByUser = async (req, res) => {
+  try {
+    let userId = req.params.id;
+    const cameras = await UserCamera.find({ UserAdmin: userId })
+      .sort("name")
+      .populate("cameraId");
     return res.json(cameras);
   } catch (error) {
     console.error(error);
@@ -65,7 +77,6 @@ exports.saveCamera = async (req, res) => {
               .status(404)
               .send({ message: "La cámara no ha sido guardada" });
           } else {
-
             let user_camera = new UserCamera();
 
             user_camera.cameraId = cameraStored._id;
@@ -73,10 +84,11 @@ exports.saveCamera = async (req, res) => {
             user_camera.UserCollaborator = null;
             user_camera.save((err, userCameraStored) => {
               if (err) {
-                return res
-                  .status(500)
-                  .send({ message: "Error al guardar la userCamera", err: err });
-              }else{
+                return res.status(500).send({
+                  message: "Error al guardar la userCamera",
+                  err: err,
+                });
+              } else {
                 console.log(userCameraStored);
                 camera.user_camera = userCameraStored._id;
               }

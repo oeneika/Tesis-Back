@@ -4,6 +4,7 @@ const path = require("path");
 var jwt = require("jwt-simple");
 const moment = require("moment");
 const { getVideoDurationInSeconds } = require("get-video-duration");
+let UserCamera = require("../models/user_camara");
 const fs = require("fs");
 
 exports.getVideos = async (req, res) => {
@@ -15,12 +16,21 @@ exports.getVideos = async (req, res) => {
   }
 };
 
-exports.getVideosByAdministrator = async (req, res) => {
+exports.getVideosByUser = async (req, res) => {
   try {
-    var adminId = req.params ? req.params.id : req.body.UserAdmin;
-    const videos = await Video.find({UserAdmin: adminId}).distinct(
-			"videoId"
-		);
+    let userId = req.params.id;
+    const cameras = await UserCamera.find({
+      UserAdmin: userId,
+    })
+      .sort("name")
+      .populate("cameraId");
+    const camerasId = cameras.map((elem) => elem.cameraId._id);
+    const videos = await Video.find()
+      .sort("name")
+      .populate({ path: "camera" })
+      .where("camera")
+      .in(camerasId);
+
     return res.json(videos);
   } catch (error) {
     console.error(error);
@@ -146,17 +156,16 @@ exports.DeleteVideo = async (req, res) => {
   }
 };
 
-
-exports.getVideoFile = async(req, res) => {
+exports.getVideoFile = async (req, res) => {
   var videoFile = req.params.videoFile;
 
   var path_file = "./videos/" + videoFile;
 
   fs.access(path_file, fs.constants.F_OK, (err) => {
-      if (!err) {
-          res.sendFile(path.resolve(path_file));
-      } else {
-          res.status(200).send({ message: "La imagen no existe en el servidor" });
-      }
+    if (!err) {
+      res.sendFile(path.resolve(path_file));
+    } else {
+      res.status(200).send({ message: "La imagen no existe en el servidor" });
+    }
   });
-}
+};
