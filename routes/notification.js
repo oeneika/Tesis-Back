@@ -22,6 +22,8 @@ api.get(
   NotificationController.getNotificationByUser
 );
 
+api.get("/get-image-notification-file/:imageFile", NotificationController.getImageFile);
+
 api.put(
   "/update-notification/:id",
   [md_auth.ensureAuth, md_auth_admin.isAdmin],

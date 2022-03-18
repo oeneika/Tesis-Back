@@ -45,34 +45,6 @@ exports.getNotification = async (req, res) => {
   }
 };
 
-const subirArchivo = (files, extensionesValidas = ["jpg", "png"], name) => {
-  console.log(files, name);
-  return new Promise((resolve, reject) => {
-    const { imagen } = files;
-    console.log(imagen);
-    const nombreCortado = imagen.name.split(".");
-    const extension = nombreCortado[nombreCortado.length - 1];
-
-    // Validar la extension
-    if (!extensionesValidas.includes(extension)) {
-      return reject(
-        `La extensión ${extension} no es permitida - ${extensionesValidas}`
-      );
-    }
-
-    const nombreTemp = name + "." + extension;
-    const uploadPath = path.join(__dirname, "../rostros/", nombreTemp);
-
-    imagen.mv(uploadPath, (err) => {
-      if (err) {
-        reject(err);
-      }
-
-      resolve({ nombre: nombreTemp, size: imagen.size });
-    });
-  });
-};
-
 exports.saveNotification = async (req, res) => {
   try {
     const token = req.headers.authorization;
@@ -192,4 +164,46 @@ exports.enviarNotificacion = async (req, res) => {
   };
 
   webpush.sendNotification(pushSubscription, "Your Push Payload Text");
+};
+
+exports.getImageFile = async(req, res) => {
+  var imageFile = req.params.imageFile;
+
+  var path_file = "./uploads/face/" + imageFile;
+
+  fs.access(path_file, fs.constants.F_OK, (err) => {
+      if (!err) {
+          res.sendFile(path.resolve(path_file));
+      } else {
+          res.status(200).send({ message: "La imagen no existe en el servidor" });
+      }
+  });
+}
+
+const subirArchivo = (files, extensionesValidas = ["jpg", "png"], name) => {
+  console.log(files, name);
+  return new Promise((resolve, reject) => {
+    const { imagen } = files;
+    console.log(imagen);
+    const nombreCortado = imagen.name.split(".");
+    const extension = nombreCortado[nombreCortado.length - 1];
+
+    // Validar la extension
+    if (!extensionesValidas.includes(extension)) {
+      return reject(
+        `La extensión ${extension} no es permitida - ${extensionesValidas}`
+      );
+    }
+
+    const nombreTemp = name + "." + extension;
+    const uploadPath = path.join(__dirname, "../uploads/face", nombreTemp);
+
+    imagen.mv(uploadPath, (err) => {
+      if (err) {
+        reject(err);
+      }
+
+      resolve({ nombre: nombreTemp, size: imagen.size });
+    });
+  });
 };

@@ -2,15 +2,10 @@
 let FaceImage = require("../models/face_image");
 let moment = require("moment");
 
-// let User = require("../models/user")
-
 exports.getFaceByCameraAndDate = async (req, res) => {
-  //   console.log(req.query);
   try {
     console.log(req.params.camera_id);
-    let faceImage = await FaceImage.find({
-      "image.video.camera._id":req.params.camera_id
-    })
+    let faceImage = await FaceImage.find()
       .where("moment")
       .gte(moment(req.query.initialDate, "DD-MM-YYYY").toDate())
       .lte(moment(req.query.finalDate, "DD-MM-YYYY").toDate())
@@ -20,17 +15,17 @@ exports.getFaceByCameraAndDate = async (req, res) => {
           path: "video",
           populate: {
             path: "camera",
-            //match: { _id: req.params.camera_id },
           },
         },
       })
       .populate("face");
-
-    res.json(faceImage);
+      const test = faceImage.filter(elem => elem.image.video.camera._id == req.params.camera_id);
+    res.json(test);
   } catch (error) {
     console.error(error);
   }
 };
+
 exports.getFaceByCameraAndDay = async (req, res) => {
   try {
     let currentDate = moment().format("DD-MM-YYYY");
@@ -43,14 +38,14 @@ exports.getFaceByCameraAndDay = async (req, res) => {
         populate: {
           path: "video",
           populate: {
-            where: { _id: req.params.camera_id },
+            //where: { _id: req.params.camera_id },
             path: "camera",
           },
         },
       })
       .populate("face");
-
-    res.json(faceImage);
+      const test = faceImage.filter(elem => elem.image.video.camera._id == req.params.camera_id);
+    res.json(test);
   } catch (error) {
     console.error(error);
   }
@@ -74,8 +69,8 @@ exports.getFaceByCameraAndWeek = async (req, res) => {
         },
       })
       .populate("face");
-
-    res.json(faceImage);
+      const test = faceImage.filter(elem => elem.image.video.camera._id == req.params.camera_id);
+    res.json(test);
   } catch (error) {
     console.error(error);
   }
@@ -99,8 +94,8 @@ exports.getFaceByCameraAndMonth = async (req, res) => {
         },
       })
       .populate("face");
-
-    res.json(faceImage);
+      const test = faceImage.filter(elem => elem.image.video.camera._id == req.params.camera_id);
+    res.json(test);
   } catch (error) {
     console.error(error);
   }
