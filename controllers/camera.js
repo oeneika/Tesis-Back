@@ -2,6 +2,7 @@
 let Camera = require("../models/camera");
 let UserCamera = require("../models/user_camara");
 let User = require("../models/user");
+//Ejemplo
 
 exports.getCameras = async (req, res) => {
   try {
