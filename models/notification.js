@@ -19,6 +19,11 @@ var NotificationSchema = Schema({
     required: true,
     trim: true,
   },
+  facialExpression: {
+    type: String,
+    required: true,
+    trim: true,
+  },
   seen: {
     type: Boolean,
     required: true,

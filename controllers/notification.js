@@ -54,14 +54,7 @@ exports.saveNotification = async (req, res) => {
     );
     let notification = new Notification();
     let params = req.body;
-    console.log(
-      params.age,
-      params.gender,
-      params.file,
-      params.camera,
-      params.user
-    );
-    if (params.age && params.gender && params.camera && params.user) {
+    if (params.age && params.gender && params.camera && params.user && params.facialExpression) {
       let nameOfImage =
         decoded.sub + params.camera + "fecha-" + moment().format();
       const regex = /:/g;
@@ -71,6 +64,7 @@ exports.saveNotification = async (req, res) => {
       notification.hour = moment(new Date());
       notification.age = params.age;
       notification.gender = params.gender;
+      notification.facialExpression = params.facialExpression;
       notification.file = params.file;
       notification.camera = params.camera;
       notification.user = params.user;
