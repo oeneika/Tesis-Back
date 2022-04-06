@@ -23,6 +23,10 @@ var CameraSchema = Schema({
     type: Schema.ObjectId,
     ref: "UserCamera",
   },
+  status: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 module.exports = mongoose.model("Camera", CameraSchema);

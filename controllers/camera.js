@@ -130,19 +130,23 @@ exports.DeleteCamera = async (req, res) => {
   try {
     var cameraId = req.params.id;
 
-    const collaborators = await UserCamera.find({ cameraId: cameraId });
-
-    for (const collaborator of collaborators) {
-      if (collaborator.UserCollaborator !== null) {
-        await UserCamera.deleteOne({
-          UserCollaborator: collaborator.UserCollaborator,
-        });
+    await Camera.findByIdAndUpdate(
+      cameraId,
+      { status: false },
+      (err, cameraUpdated) => {
+        if (err) {
+          res.status(500).send({ message: "Error al actualizar la camara" });
+        } else {
+          if (!cameraUpdated) {
+            res
+              .status(404)
+              .send({ message: "La camara no ha sido actualizada" });
+          } else {
+            res.status(200).send({ camera: cameraUpdated });
+          }
+        }
       }
-    }
-
-    await Camera.deleteOne({ _id: cameraId });
-
-    res.status(200).send({ message: "Camara eliminada exitosamente" });
+    );
   } catch (error) {
     res.status(500).send({ message: "Error eliminando camara" });
   }
