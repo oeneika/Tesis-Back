@@ -70,15 +70,15 @@ const subirArchivo = (files, extensionesValidas = ["jpg", "png"], name) => {
             );
         }
 
-        const nombreTemp = name + "." + extension;
-        const uploadPath = path.join(__dirname, "../imagenes/", nombreTemp);
+        const uploadPath = path.join(__dirname, "../imagenes/", name);
 
         imagen.mv(uploadPath, (err) => {
             if (err) {
+                console.log('err: ', err)
                 reject(err);
             }
 
-            resolve({ nombre: nombreTemp, size: imagen.size });
+            resolve({ nombre: name, size: imagen.size });
         });
     });
 };
@@ -86,25 +86,27 @@ const subirArchivo = (files, extensionesValidas = ["jpg", "png"], name) => {
 exports.saveImage = async(req, res) => {
     try {
         let image = new Image();
+
         let params = req.body;
+        console.log(req.body, req.files);
         const token = req.headers.authorization;
-        const decoded = jwt.decode(
-            token,
-            "clave_secreta_del_curso_de_angular4avanzado"
-        );
+        // const decoded = jwt.decode(
+        //     token,
+        //     "clave_secreta_del_curso_de_angular4avanzado"
+        // );
 
         if (params.name) {
-            let nameOfImage =
-                decoded.sub + params.name + "fecha-" + moment().format();
+            let nameOfImage = params.name;
+                // decoded.sub + params.name + "fecha-" + moment().format();
             const regex = /:/g;
             const newName = nameOfImage.replace(regex, "-");
             const { nombre } = await subirArchivo(req.files, undefined, newName);
             image.name = params.name;
-            image.video = params.video;
+            image.video ?    image.video =  params.video : undefined;
             image.file = nombre;
             image.save((err, imageStored) => {
                 if (err) {
-                    res.status(500).send({ message: "Error al guardar la imagen" });
+                    res.status(500).send({ message: "Error al guardar la imagen: " + err });
                 } else {
                     if (!imageStored) {
                         res.status(404).send({ message: "La imagen no ha sido guardada" });

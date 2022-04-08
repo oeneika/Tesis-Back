@@ -235,6 +235,7 @@ function uploadImage(req, res) {
     var file_name = "No subido...";
 
     if (req.files) {
+        console.log('webo', req.files)
         var file_path = "uploads\\users\\" + req.files.image.name;
         var file_split = file_path.split("\\");
         var file_name = file_split[2];
@@ -267,7 +268,7 @@ function uploadImage(req, res) {
                         } else {
 
                             sampleFile.mv(uploadPath, function (err) {
-                                if (err) return res.status(500).send(err);
+                                // if (err) return res.status(500).send(err);
                                 return res
                                   .status(200)
                                   .send({ user: userUpdated, image: file_name });

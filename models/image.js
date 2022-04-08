@@ -13,7 +13,7 @@ var ImageSchema = Schema({
   video: {
     type: Schema.ObjectId,
     ref: "Video",
-    required: true,
+    required: false,
   },
   file: {
     type: String,

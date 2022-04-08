@@ -36,7 +36,7 @@ var FaceSchema = Schema({
   confidenceLevels: {
     type: Schema.ObjectId,
     ref: "ConfidenceLevel",
-    required: true,
+    required: false,
   },
   user: {
     type: Schema.ObjectId,
