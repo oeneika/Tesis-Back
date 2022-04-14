@@ -67,8 +67,9 @@ const subirArchivo = (files, extensionesValidas = ["jpg", "png"], name) => {
 saveNotification = async (faceId, req, imageId) => {
   try {
     const face = await FaceModel.findById(faceId);
-    const image = await ImageModel.findById(imageId).populate("video");
-    let cameraId = image.video.camera;
+    const image = await ImageModel.findById(imageId);
+
+    let cameraId = image.camera;
     const token = req.headers.authorization;
     const decoded = jwt.decode(
       token,

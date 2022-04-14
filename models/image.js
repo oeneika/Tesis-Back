@@ -9,17 +9,12 @@ var ImageSchema = Schema({
     required: true,
     trim: true,
   },
-
-  video: {
-    type: Schema.ObjectId,
-    ref: "Video",
-    required: false,
-  },
   file: {
     type: String,
     required: true,
     trim: true,
   },
+  camera: { type: Schema.ObjectId, ref: "Camera", required: true },
 });
 
 module.exports = mongoose.model("Image", ImageSchema);

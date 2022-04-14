@@ -19,7 +19,6 @@ var VideoSchema = Schema({
     required: true,
     trim: true,
   },
-
   camera: { type: Schema.ObjectId, ref: "Camera", required: true },
 });
 
