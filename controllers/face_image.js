@@ -36,33 +36,33 @@ exports.getFaceImage = async (req, res) => {
   }
 };
 
-const subirArchivo = (files, extensionesValidas = ["jpg", "png"], name) => {
-  console.log(files, name);
-  return new Promise((resolve, reject) => {
-    const { imagen } = files;
-    console.log(imagen);
-    const nombreCortado = imagen.name.split(".");
-    const extension = nombreCortado[nombreCortado.length - 1];
+// const subirArchivo = (files, extensionesValidas = ["jpg", "png"], name) => {
+//   console.log(files, name);
+//   return new Promise((resolve, reject) => {
+//     const { imagen } = files;
+//     console.log(imagen);
+//     const nombreCortado = imagen.name.split(".");
+//     const extension = nombreCortado[nombreCortado.length - 1];
 
-    // Validar la extension
-    if (!extensionesValidas.includes(extension)) {
-      return reject(
-        `La extensión ${extension} no es permitida - ${extensionesValidas}`
-      );
-    }
+//     // Validar la extension
+//     if (!extensionesValidas.includes(extension)) {
+//       return reject(
+//         `La extensión ${extension} no es permitida - ${extensionesValidas}`
+//       );
+//     }
 
-    const nombreTemp = name + "." + extension;
-    const uploadPath = path.join(__dirname, "../uploads/face", nombreTemp);
+//     const nombreTemp = name + "." + extension;
+//     const uploadPath = path.join(__dirname, "../uploads/face", nombreTemp);
 
-    imagen.mv(uploadPath, (err) => {
-      if (err) {
-        reject(err);
-      }
+//     imagen.mv(uploadPath, (err) => {
+//       if (err) {
+//         reject(err);
+//       }
 
-      resolve({ nombre: nombreTemp, size: imagen.size });
-    });
-  });
-};
+//       resolve({ nombre: nombreTemp, size: imagen.size });
+//     });
+//   });
+// };
 
 saveNotification = async (faceId, req, imageId) => {
   try {
@@ -70,19 +70,10 @@ saveNotification = async (faceId, req, imageId) => {
     const image = await ImageModel.findById(imageId);
 
     let cameraId = image.camera;
-    const token = req.headers.authorization;
-    const decoded = jwt.decode(
-      token,
-      "clave_secreta_del_curso_de_angular4avanzado"
-    );
+
     let notification = new Notification();
 
     if (face.age && face.gender && cameraId && face.user) {
-      let nameOfImage = decoded.sub + cameraId + "fecha-" + moment().format();
-      const regex = /:/g;
-      const newName = nameOfImage.replace(regex, "-");
-      const { nombre } = await subirArchivo(req.files, undefined, newName);
-
       notification.hour = moment(new Date());
       notification.age = face.age;
       notification.gender = face.gender;
@@ -91,7 +82,7 @@ saveNotification = async (faceId, req, imageId) => {
       notification.user = face.user;
       notification.seen = false;
 
-      notification.file = nombre;
+      notification.image = imageId;
       notification.save((err, notificationStored) => {
         if (err) {
           console.log({ message: "Error al guardar la imagen" });

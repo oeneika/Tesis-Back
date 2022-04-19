@@ -43,7 +43,7 @@ exports.getImage = async (req, res) => {
   try {
     var imageId = req.params.id;
     const image = await Image.findById(imageId);
-
+    console.log(image);
     if (!image) {
       return res.status(404).send({ message: "La imagen no existe" });
     }
@@ -70,7 +70,11 @@ const subirArchivo = (files, extensionesValidas = ["jpg", "png"], name) => {
       );
     }
 
-    const uploadPath = path.join(__dirname, "../imagenes/", name);
+    const uploadPath = path.join(
+      __dirname,
+      "../imagenes/",
+      name + "." + extension
+    );
 
     imagen.mv(uploadPath, (err) => {
       if (err) {
@@ -78,7 +82,7 @@ const subirArchivo = (files, extensionesValidas = ["jpg", "png"], name) => {
         reject(err);
       }
 
-      resolve({ nombre: name, size: imagen.size });
+      resolve({ nombre: name + "." + extension, size: imagen.size });
     });
   });
 };

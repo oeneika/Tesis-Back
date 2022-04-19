@@ -29,11 +29,7 @@ var NotificationSchema = Schema({
     required: true,
     trim: true,
   },
-  file: {
-    type: String,
-    required: true,
-    trim: true,
-  },
+  image: { type: Schema.ObjectId, ref: "Image", required: true },
   camera: { type: Schema.ObjectId, ref: "Camera", required: true },
   user: { type: Schema.ObjectId, ref: "User", required: true },
 });
