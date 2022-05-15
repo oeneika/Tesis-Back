@@ -4,6 +4,14 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var NotificationSchema = Schema({
+  name: {
+    type: String,
+    trim: true,
+  },
+  lastName: {
+    type: String,
+    trim: true,
+  },
   hour: {
     type: Date,
     required: true,

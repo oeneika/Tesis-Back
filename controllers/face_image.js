@@ -77,6 +77,8 @@ saveNotification = async (faceId, req, imageId) => {
       notification.hour = moment(new Date());
       notification.age = face.age;
       notification.gender = face.gender;
+      notification.name = face.name;
+      notification.lastName = face.surname;
       notification.facialExpression = req.body.facialExpression;
       notification.camera = cameraId;
       notification.user = req.body.user;
