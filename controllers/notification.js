@@ -18,7 +18,7 @@ exports.getNotificationByUser = async (req, res) => {
   let userId = req.params.id;
   try {
     const notifications = await Notification.find({ user: userId }).sort(
-      "hour"
+      { hour: -1}
     );
     return res.json(notifications);
   } catch (error) {

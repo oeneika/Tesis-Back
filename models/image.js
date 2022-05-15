@@ -14,7 +14,7 @@ var ImageSchema = Schema({
     required: true,
     trim: true,
   },
-  camera: { type: Schema.ObjectId, ref: "Camera", required: true },
+  camera: { type: Schema.ObjectId, ref: "Camera", required: false },
 });
 
 module.exports = mongoose.model("Image", ImageSchema);

@@ -73,7 +73,7 @@ const subirArchivo = (files, extensionesValidas = ["jpg", "png"], name) => {
     const uploadPath = path.join(
       __dirname,
       "../imagenes/",
-      name + "." + extension
+      name
     );
 
     imagen.mv(uploadPath, (err) => {
@@ -82,7 +82,7 @@ const subirArchivo = (files, extensionesValidas = ["jpg", "png"], name) => {
         reject(err);
       }
 
-      resolve({ nombre: name + "." + extension, size: imagen.size });
+      resolve({ nombre: name , size: imagen.size });
     });
   });
 };

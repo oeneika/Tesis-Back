@@ -73,18 +73,19 @@ saveNotification = async (faceId, req, imageId) => {
 
     let notification = new Notification();
 
-    if (face.age && face.gender && cameraId && face.user) {
+    if (face.age && face.gender && cameraId) {
       notification.hour = moment(new Date());
       notification.age = face.age;
       notification.gender = face.gender;
       notification.facialExpression = req.body.facialExpression;
       notification.camera = cameraId;
-      notification.user = face.user;
+      notification.user = req.body.user;
       notification.seen = false;
 
       notification.image = imageId;
       notification.save((err, notificationStored) => {
         if (err) {
+          console.log(err);
           console.log({ message: "Error al guardar la imagen" });
         } else {
           if (!notificationStored) {

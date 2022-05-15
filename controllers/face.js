@@ -61,6 +61,7 @@ exports.guardarFace = async(req, res) => {
     try {
         let face = new Face();
         let params = req.body;
+        console.log('face fuera:', params);
         if (params.name && params.surname && params.age && params.gender) {
             face.name = params.name;
             face.surname = params.surname;
@@ -70,7 +71,7 @@ exports.guardarFace = async(req, res) => {
             face.unknown = params.unknown;
             face.confidenceLevels = params.confidenceLevels;
             face.user = params.user;
-
+            console.log('face:', params);
             face.save((err, faceStored) => {
                 if (err) {
                     res
@@ -88,6 +89,7 @@ exports.guardarFace = async(req, res) => {
                 }
             });
         }
+        
     } catch (error) {
         console.error(error);
     }
@@ -145,6 +147,7 @@ exports.DeleteFace = async(req, res) => {
 const subirArchivo = (files, extensionesValidas = ["jpg", "png"], name) => {
     return new Promise((resolve, reject) => {
         const { imagen } = files;
+        console.log('conchetuhermana', imagen);
 
         const nombreCortado = imagen.name.split(".");
         const extension = nombreCortado[nombreCortado.length - 1];
@@ -156,7 +159,7 @@ const subirArchivo = (files, extensionesValidas = ["jpg", "png"], name) => {
             );
         }
 
-        const nombreTemp = name + "." + extension;
+        const nombreTemp = imagen.name.split(".")[0] + name + "." + extension;
         const uploadPath = path.join(__dirname, "../uploads/face/", nombreTemp);
 
         imagen.mv(uploadPath, (err) => {
@@ -173,14 +176,17 @@ exports.UploadImage = async(req, res) => {
     var faceId = req.params.id;
     var file_name = "No subido...";
     const token = req.headers.authorization;
-    const decoded = jwt.decode(
-        token,
-        "clave_secreta_del_curso_de_angular4avanzado"
-    );
+    // const decoded = jwt.decode(
+    //     token,
+    //     "clave_secreta_del_curso_de_angular4avanzado"
+    // ); 
     if (req.files) {
-        let nameOfImage = decoded.sub + "fecha-" + moment().format();
+        let nameOfImage =
+        // decoded.sub +
+        moment().format();
         const regex = /:/g;
         const newName = nameOfImage.replace(regex, "-");
+        console.log('triple hijueputas ', req.files);
         const { nombre } = await subirArchivo(req.files, undefined, newName);
 
         Face.findByIdAndUpdate(

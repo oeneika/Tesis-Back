@@ -30,7 +30,6 @@ api.get(
 
 api.get(
   "/get-image/:id",
-  [md_auth.ensureAuth, md_auth_admin.isAdmin],
   ImageController.getImage
 );
 
