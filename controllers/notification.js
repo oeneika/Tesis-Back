@@ -17,9 +17,9 @@ exports.getNotifications = async (req, res) => {
 exports.getNotificationByUser = async (req, res) => {
   let userId = req.params.id;
   try {
-    const notifications = await Notification.find({ user: userId }).sort(
-      { hour: -1}
-    );
+    const notifications = await Notification.find({ user: userId })
+      .sort({ hour: -1 })
+      .populate("face");
     return res.json(notifications);
   } catch (error) {
     console.error(error);
@@ -54,7 +54,13 @@ exports.saveNotification = async (req, res) => {
     );
     let notification = new Notification();
     let params = req.body;
-    if (params.age && params.gender && params.camera && params.user && params.facialExpression) {
+    if (
+      params.age &&
+      params.gender &&
+      params.camera &&
+      params.user &&
+      params.facialExpression
+    ) {
       let nameOfImage =
         decoded.sub + params.camera + "fecha-" + moment().format();
       const regex = /:/g;
@@ -160,19 +166,19 @@ exports.enviarNotificacion = async (req, res) => {
   webpush.sendNotification(pushSubscription, "Your Push Payload Text");
 };
 
-exports.getImageFile = async(req, res) => {
+exports.getImageFile = async (req, res) => {
   var imageFile = req.params.imageFile;
 
   var path_file = "./uploads/face/" + imageFile;
 
   fs.access(path_file, fs.constants.F_OK, (err) => {
-      if (!err) {
-          res.sendFile(path.resolve(path_file));
-      } else {
-          res.status(200).send({ message: "La imagen no existe en el servidor" });
-      }
+    if (!err) {
+      res.sendFile(path.resolve(path_file));
+    } else {
+      res.status(200).send({ message: "La imagen no existe en el servidor" });
+    }
   });
-}
+};
 
 const subirArchivo = (files, extensionesValidas = ["jpg", "png"], name) => {
   console.log(files, name);

@@ -75,11 +75,12 @@ saveNotification = async (faceId, req, imageId) => {
 
     if (face.age && face.gender && cameraId) {
       notification.hour = moment(new Date());
-      notification.age = face.age;
-      notification.gender = face.gender;
-      notification.name = face.name;
-      notification.lastName = face.surname;
+      // notification.age = face.age;
+      // notification.gender = face.gender;
+      // notification.name = face.name;
+      // notification.lastName = face.surname;
       notification.facialExpression = req.body.facialExpression;
+      notification.face = faceId;
       notification.camera = cameraId;
       notification.user = req.body.user;
       notification.seen = false;
