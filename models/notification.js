@@ -4,6 +4,11 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var NotificationSchema = Schema({
+  hour: {
+    type: Date,
+    required: true,
+    trim: true,
+  },
   facialExpression: {
     type: String,
     required: true,
