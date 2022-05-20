@@ -19,7 +19,7 @@ var NotificationSchema = Schema({
     required: true,
     trim: true,
   },
-  face: { type: Schema.ObjectId, ref: "Face", required: false },
+  face: { type: Schema.ObjectId, ref: "Face", required: true },
   image: { type: Schema.ObjectId, ref: "Image", required: true },
   camera: { type: Schema.ObjectId, ref: "Camera", required: true },
   user: { type: Schema.ObjectId, ref: "User", required: true },
