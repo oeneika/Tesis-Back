@@ -57,7 +57,7 @@ exports.getVideo = async (req, res) => {
 const subirArchivo = (files, extensionesValidas = ["mp4"], name) => {
   return new Promise((resolve, reject) => {
     const { file } = files;
-
+    console.log('archivo ', file)
     const nombreCortado = file.name.split(".");
     const extension = nombreCortado[nombreCortado.length - 1];
 
@@ -87,13 +87,13 @@ exports.saveVideo = async (req, res) => {
     let params = req.body;
     const token = req.headers.authorization;
 
-    const decoded = jwt.decode(
-      token,
-      "clave_secreta_del_curso_de_angular4avanzado"
-    );
+    // const decoded = jwt.decode(
+    //   token,
+    //   "clave_secreta_del_curso_de_angular4avanzado"
+    // );
 
     var nameOfVideo =
-      decoded.sub + params.camera + "fecha-" + moment().format();
+      params.camera + "fecha-" + moment().format();
     const regex = /:/g;
     const newName = nameOfVideo.replace(regex, "-");
 
