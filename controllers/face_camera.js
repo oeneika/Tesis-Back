@@ -12,14 +12,13 @@ exports.getFaceByCameraAndDate = async (req, res) => {
       .populate({
         path: "image",
         populate: {
-          path: "video",
-          populate: {
-            path: "camera",
-          },
+          path: "camera",
         },
       })
       .populate("face");
-      const test = faceImage.filter(elem => elem.image.video.camera._id == req.params.camera_id);
+    const test = faceImage.filter(
+      (elem) => elem.image.camera._id == req.params.camera_id
+    );
     res.json(test);
   } catch (error) {
     console.error(error);
@@ -36,15 +35,13 @@ exports.getFaceByCameraAndDay = async (req, res) => {
       .populate({
         path: "image",
         populate: {
-          path: "video",
-          populate: {
-            //where: { _id: req.params.camera_id },
-            path: "camera",
-          },
+          //where: { _id: req.params.camera_id },
         },
       })
       .populate("face");
-      const test = faceImage.filter(elem => elem.image.video.camera._id == req.params.camera_id);
+    const test = faceImage.filter(
+      (elem) => elem.image.camera._id == req.params.camera_id
+    );
     res.json(test);
   } catch (error) {
     console.error(error);
@@ -62,14 +59,13 @@ exports.getFaceByCameraAndWeek = async (req, res) => {
       .populate({
         path: "image",
         populate: {
-          path: "video",
-          populate: {
-            path: "camera",
-          },
+          path: "camera",
         },
       })
       .populate("face");
-      const test = faceImage.filter(elem => elem.image.video.camera._id == req.params.camera_id);
+    const test = faceImage.filter(
+      (elem) => elem.image.camera._id == req.params.camera_id
+    );
     res.json(test);
   } catch (error) {
     console.error(error);
@@ -87,14 +83,13 @@ exports.getFaceByCameraAndMonth = async (req, res) => {
       .populate({
         path: "image",
         populate: {
-          path: "video",
-          populate: {
-            path: "camera",
-          },
+          path: "camera",
         },
       })
       .populate("face");
-      const test = faceImage.filter(elem => elem.image.video.camera._id == req.params.camera_id);
+    const test = faceImage.filter(
+      (elem) => elem.image.camera._id == req.params.camera_id
+    );
     res.json(test);
   } catch (error) {
     console.error(error);
