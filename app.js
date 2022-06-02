@@ -95,27 +95,35 @@ app.use("/api", user_camera);
 app.use("/api", face_image);
 app.use("/api", face_camera);
 
-/*io.on("connection", (socket) => {
-	socket.on("stream", (image) => {
-		console.log("usuario conectado");
-		socket.broadcast.emit("stream", image); //emitir el evento a todos los sockets conectados
-	});
-});*/
+// io.on("connection", (socket) => {
+// 	socket.on("stream", (image) => {
+// 		console.log("usuario conectado");
+// 		socket.broadcast.emit("stream", image); //emitir el evento a todos los sockets conectados
+// 	});
+// });
 
 io.on("connection", (socket) => {
   const id_handshake = socket.id;
-  console.log("uniendose a la llamada");
   console.log(`Nuevo dispositivo conectado: ${id_handshake}`);
+  socket.on("leave", (data) => {
+    const roomName = data.roomName;
+    console.log("saliendo del cuarto", roomName);
+    socket.leave(roomName);
+    socket.to(roomName).emit("bye-user", data);
+  });
   socket.on("join", (data) => {
     const roomName = data.roomName;
     console.log("entrando al cuarto", roomName);
     socket.join(roomName);
     socket.to(roomName).emit("new-user", data);
-
-    socket.on("disconnect", () => {
-      console.log("saliendo de la llamada: ", id_handshake);
-      socket.emit("bye-user", data);
-    });
+  });
+  socket.on("message", (data) => {
+    const roomName = data.roomName;
+    console.log("notificando al cuarto", roomName);
+    socket.to(roomName).emit("message", data);
+  });
+  socket.on("disconnect", () => {
+    console.log("saliendo de la llamada: ", id_handshake);
   });
 });
 
@@ -131,8 +139,8 @@ if(process.env.KEYS_PATH && process.env.CERT_PATH){
     serverPeerjs = require("http").Server(app);
 }*/
 
-var hostedServer = serverPeerjs.listen(process.env.PEERjS_PORT, () => {
-  console.log(`Peerjs server running on port: ${process.env.PEERjS_PORT}`);
+var hostedServer = serverPeerjs.listen(process.env.PEERJS_PORT, () => {
+  console.log(`Peerjs server running on portobello: ${process.env.PEERJS_PORT}`);
 });
 
 //var hostedServer = serverPeerjs.listen();
