@@ -35,7 +35,7 @@ exports.getFaceByCameraAndDay = async (req, res) => {
       .populate({
         path: "image",
         populate: {
-          //where: { _id: req.params.camera_id },
+          path: "camera",
         },
       })
       .populate("face");
