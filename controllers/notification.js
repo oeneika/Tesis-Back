@@ -63,7 +63,7 @@ exports.saveNotification = async (req, res) => {
     ) {
       let nameOfImage =
         decoded.sub + params.camera + "fecha-" + moment().format();
-      const regex = /:/g;
+      const regex = /["", ":"]/g;
       const newName = nameOfImage.replace(regex, "-");
       const { nombre } = await subirArchivo(req.files, undefined, newName);
 

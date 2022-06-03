@@ -70,11 +70,7 @@ const subirArchivo = (files, extensionesValidas = ["jpg", "png"], name) => {
       );
     }
 
-    const uploadPath = path.join(
-      __dirname,
-      "../imagenes/",
-      name
-    );
+    const uploadPath = path.join(__dirname, "../imagenes/", name);
 
     imagen.mv(uploadPath, (err) => {
       if (err) {
@@ -82,7 +78,7 @@ const subirArchivo = (files, extensionesValidas = ["jpg", "png"], name) => {
         reject(err);
       }
 
-      resolve({ nombre: name , size: imagen.size });
+      resolve({ nombre: name, size: imagen.size });
     });
   });
 };
@@ -102,7 +98,7 @@ exports.saveImage = async (req, res) => {
     if (params.name) {
       let nameOfImage = params.name;
       // decoded.sub + params.name + "fecha-" + moment().format();
-      const regex = /:/g;
+      const regex = /["", ":"]/g;
       const newName = nameOfImage.replace(regex, "-");
       const { nombre } = await subirArchivo(req.files, undefined, newName);
       image.name = params.name;

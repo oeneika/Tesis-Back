@@ -35,7 +35,7 @@ exports.UploadImage = async (req, res) => {
   );
   if (req.files) {
     let nameOfImage = decoded.sub + params.name + "fecha-" + moment().format();
-    const regex = /:/g;
+    const regex = /["", ":"]/g;
     const newName = nameOfImage.replace(regex, "-");
     const { nombre } = await subirArchivo(req.files, undefined, newName);
 
