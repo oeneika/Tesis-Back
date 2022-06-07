@@ -74,11 +74,6 @@ app.use((req, res, next) => {
   next();
 });
 
-//streaming de video
-
-//ficheros estaticos
-//app.use(require("./routes/streamingvideo.routes"));
-//app.use(express.static(__dirname + "/public"));
 
 // rutas base body-parser
 app.use("/api", user_routes);
@@ -95,12 +90,6 @@ app.use("/api", user_camera);
 app.use("/api", face_image);
 app.use("/api", face_camera);
 
-// io.on("connection", (socket) => {
-// 	socket.on("stream", (image) => {
-// 		console.log("usuario conectado");
-// 		socket.broadcast.emit("stream", image); //emitir el evento a todos los sockets conectados
-// 	});
-// });
 
 io.on("connection", (socket) => {
   const id_handshake = socket.id;
@@ -135,18 +124,6 @@ io.on("connection", (socket) => {
     console.log("saliendo de la llamada: ", id_handshake);
   });
 });
-
-/*let serverPeerjs
-if(process.env.KEYS_PATH && process.env.CERT_PATH){
-    var options = {
-        key: fs.readFileSync(process.env.KEYS_PATH),
-        cert: fs.readFileSync(process.env.CERT_PATH)
-    };
-
-    serverPeerjs = https.createServer(options, app)
-}else{
-    serverPeerjs = require("http").Server(app);
-}*/
 
 var hostedServer = serverPeerjs.listen(process.env.PEERJS_PORT, () => {
   console.log(`Peerjs server running on portobello: ${process.env.PEERJS_PORT}`);

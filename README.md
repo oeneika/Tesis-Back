@@ -1,4 +1,4 @@
-## Instalar proyecto (Frontend)
+## Instalar proyecto (Backend)
 
 ### Clonar repositorio
 

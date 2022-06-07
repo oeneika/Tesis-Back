@@ -28,7 +28,7 @@ const createConfidenceLevel = async() => {
 
             new ConfidenceLevel({
                 title: "Nivel 2",
-                description: "Personas conocidas que frecuentan los alrededores del recinto como personal de aseo, vecinos del mismo piso, etc.",
+                description: "Personas que frecuentan los alrededores del recinto como personal de limpieza, vecinos, etc.",
             }).save(),
 
             new ConfidenceLevel({
