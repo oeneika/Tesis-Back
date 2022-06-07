@@ -109,7 +109,9 @@ io.on("connection", (socket) => {
     const roomName = data.roomName;
     console.log("saliendo del cuarto", roomName, ' - ', id_handshake);
     socket.to(roomName).emit("bye-user", data);
-    socket.leave(roomName);
+    setTimeout(() => {
+      socket.leave(roomName);
+    }, 1000);
   });
   socket.on("join", (data) => {
     const roomName = data.roomName;
