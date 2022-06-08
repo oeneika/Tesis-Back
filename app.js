@@ -21,7 +21,7 @@ const serverPeerjs = require("http").Server(app);
 
 const io = require("socket.io")(http, {
   cors: {
-    origin: process.env.FRONT_END_ORIGIN || "http://localhost:4200",
+    origin: "*",
     methods: ["GET", "POST"],
     transports: ["websocket", "polling"],
     credentials: true,
@@ -57,7 +57,7 @@ app.use(cors());
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Credentials", false);
+  res.header("Access-Control-Allow-Credentials", true);
   res.header(
     "Access-Control-Allow-Headers",
     "Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method"
@@ -66,7 +66,6 @@ app.use((req, res, next) => {
   res.header("Allow", "GET, POST, OPTIONS, PUT, DELETE");
   next();
 });
-
 
 // rutas base body-parser
 app.use("/api", user_routes);
