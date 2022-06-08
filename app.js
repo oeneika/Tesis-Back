@@ -1,9 +1,12 @@
 "use strict";
 var initialSetup = require("./libs/initialSetup");
-require("dotenv").config();
+
+if (process.env.NODE_ENV != 'production'){
+  require("dotenv").config();
+}
+
 var express = require("express");
 var bodyParser = require("body-parser");
-var webpush = require("web-push");
 const fs = require("fs");
 var https = require("https");
 const fileUpload = require("express-fileupload");
@@ -14,27 +17,17 @@ initialSetup.createConfidenceLevel();
 const { ExpressPeerServer } = require("peer");
 const http = require("http").Server(app); //creamos un servidor http a partir de la libreria express
 const serverPeerjs = require("http").Server(app);
+
+
 const io = require("socket.io")(http, {
   cors: {
-    origin: process.env.FRONT_END_ORIGIN || "http://localhost:4200",
+    origin: process.env.FRONT_END_ORIGIN || "https://sistema-de-videovigilancia.netlify.app",
     methods: ["GET", "POST"],
     transports: ["websocket", "polling"],
     credentials: true,
   },
   allowEIO3: true,
 });
-
-//Push notifications
-const vapidKeys = {
-  publicKey: process.env.PUBLIC_KEY,
-  privateKey: process.env.PRIVATE_KEY,
-};
-
-webpush.setVapidDetails(
-  "mailto:example@yourdomain.org",
-  vapidKeys.publicKey,
-  vapidKeys.privateKey
-);
 
 // Cargar rutas
 var user_routes = require("./routes/user");
