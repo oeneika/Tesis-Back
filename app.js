@@ -15,6 +15,16 @@ const { ExpressPeerServer } = require("peer");
 const http = require("http").Server(app); //creamos un servidor http a partir de la libreria express
 const serverPeerjs = require("http").Server(app);
 
+const io = require("socket.io")(http, {
+  cors: {
+    origin: process.env.FRONT_END_ORIGIN,
+    methods: ["GET", "POST"],
+    transports: ["websocket", "polling"],
+    credentials: true,
+  },
+  allowEIO3: true,
+});
+
 // Cargar rutas
 var user_routes = require("./routes/user");
 var camera_routes = require("./routes/camera");
@@ -51,16 +61,6 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
   res.header("Allow", "GET, POST, OPTIONS, PUT, DELETE");
   next();
-});
-
-const io = require("socket.io")(http, {
-  cors: {
-    origin: process.env.FRONT_END_ORIGIN || "http://localhost:4200",
-    methods: ["GET", "POST"],
-    transports: ["websocket", "polling"],
-    credentials: true,
-  },
-  allowEIO3: true,
 });
 
 // rutas base body-parser
