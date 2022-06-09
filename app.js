@@ -84,25 +84,25 @@ io.on("connection", (socket) => {
   console.log(`Nuevo dispositivo conectado: ${id_handshake}`);
   socket.on("leave", (data) => {
     const roomName = data.roomName;
-    console.log("saliendo del cuarto", roomName, ' - ', id_handshake);
-    socket.to(roomName).emit("bye-user", data);
+    console.log("saliendo del cuarto ", roomName, ' - ', id_handshake);
+    socket.to(roomName).emit("bye-user ", data);
     setTimeout(() => {
       socket.leave(roomName);
     }, 1000);
   });
   socket.on("join", (data) => {
     const roomName = data.roomName;
-    console.log("entrando al cuarto", roomName, ' - ', id_handshake);
+    console.log("entrando al cuarto ", roomName, ' - ', id_handshake);
     socket.join(roomName);
     socket.to(roomName).emit("new-user", data);
   });
   socket.on("message", (data) => {
     const roomName = data.roomName;
-    console.log("notificando al cuarto", roomName, ' - ', id_handshake);
+    console.log("notificando al cuarto ", roomName, ' - ', id_handshake);
     socket.to(roomName).emit("message", data);
   });
   socket.on("get-rooms", (data) => {
-    console.log('f yeah', data, ' - ', id_handshake);
+    console.log('f yeah ', data, ' - ', id_handshake);
     if (data.joinRoom) {
       socket.join(data.cameraId);
     }
