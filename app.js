@@ -1,9 +1,6 @@
 "use strict";
 var initialSetup = require("./libs/initialSetup");
-
-if (process.env.NODE_ENV != 'production'){
-  require("dotenv").config();
-}
+require("dotenv").config();
 
 var express = require("express");
 var bodyParser = require("body-parser");
@@ -17,17 +14,6 @@ initialSetup.createConfidenceLevel();
 const { ExpressPeerServer } = require("peer");
 const http = require("http").Server(app); //creamos un servidor http a partir de la libreria express
 const serverPeerjs = require("http").Server(app);
-
-
-const io = require("socket.io")(http, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-    transports: ["websocket", "polling"],
-    credentials: true,
-  },
-  allowEIO3: true,
-});
 
 // Cargar rutas
 var user_routes = require("./routes/user");
@@ -65,6 +51,16 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
   res.header("Allow", "GET, POST, OPTIONS, PUT, DELETE");
   next();
+});
+
+const io = require("socket.io")(http, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+    transports: ["websocket", "polling"],
+    credentials: true,
+  },
+  allowEIO3: true,
 });
 
 // rutas base body-parser
