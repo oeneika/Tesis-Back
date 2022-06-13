@@ -17,7 +17,7 @@ const serverPeerjs = require("http").Server(app);
 
 const io = require("socket.io")(http, {
   cors: {
-    origin: process.env.FRONT_END_ORIGIN,
+    origin: process.env.FRONT_END_LOCAL,
     methods: ["GET", "POST"],
     transports: ["websocket", "polling"],
     credentials: true,
