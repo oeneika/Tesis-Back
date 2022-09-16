@@ -55,7 +55,7 @@ const saveUser = async (req, res) => {
                 .send({ message: "no se ha registrado el usuario" });
             } else {
               let token = jwt.createToken(userStored);
-              let verificationLink = `${process.env.FRONT_END_ORIGIN}/active-account/${token}`;
+              let verificationLink = `${process.env.FRONT_END_ORIGIN}/#/active-account/${token}`;
               sendMail({
                 email: userStored.email,
                 html: welcomeHtml(verificationLink),
@@ -381,7 +381,7 @@ const forgotPassword = async (req, res) => {
     }
     const token = jwt.createToken(usuario);
 
-    verificationLink = `${process.env.FRONT_END_ORIGIN}/new-password/${token}`;
+    verificationLink = `${process.env.FRONT_END_ORIGIN}/#/recover-password/${token}`;
   } catch (error) {
     return res.send(error);
   }
