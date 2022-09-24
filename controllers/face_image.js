@@ -3,10 +3,13 @@ let FaceImage = require("../models/face_image");
 let Notification = require("../models/notification");
 let ImageModel = require("../models/image");
 let FaceModel = require("../models/face");
+let UserModel = require("../models/user");
 let moment = require("moment");
 var jwt = require("jwt-simple");
 const path = require("path");
 const fs = require("fs");
+const { sendMail } = require("../services/mails");
+const { mailNotificationHtml } = require("../services/textMails");
 
 exports.getFaceImages = async (req, res) => {
   try {
@@ -66,10 +69,12 @@ exports.getFaceImage = async (req, res) => {
 
 saveNotification = async (faceId, req, imageId) => {
   try {
-    const face = await FaceModel.findById(faceId);
-    const image = await ImageModel.findById(imageId);
+    const face = await FaceModel.findById(faceId).populate("confidenceLevels");
+    const image = await ImageModel.findById(imageId).populate("camera");
 
-    let cameraId = image.camera;
+    const user = await UserModel.findById(req.body.user);
+
+    let cameraId = image?.camera;
 
     let notification = new Notification();
 
@@ -86,7 +91,9 @@ saveNotification = async (faceId, req, imageId) => {
       notification.seen = false;
 
       notification.image = imageId;
-      notification.save((err, notificationStored) => {
+      let confidenceLevel4 = face?.confidenceLevels?.title;
+
+      notification.save(async (err, notificationStored) => {
         if (err) {
           console.log(err);
           console.log({ message: "Error al guardar la imagen" });
@@ -94,6 +101,20 @@ saveNotification = async (faceId, req, imageId) => {
           if (!notificationStored) {
             console.log({ message: "La notificación no ha sido guardada" });
           } else {
+            let confidenceLevel4 = face?.confidenceLevels?.title;
+            if (confidenceLevel4.includes(4)) {
+              if (confidenceLevel4.includes(4)) {
+                await sendMail({
+                  email: user.email,
+                  html: mailNotificationHtml({
+                    name: face.name,
+                    nameCamera: image.camera.name,
+                    date: moment(new Date()),
+                  }),
+                  subject: "Notificación de usuario desconocido",
+                });
+              }
+            }
             console.log({ notification: notificationStored });
           }
         }

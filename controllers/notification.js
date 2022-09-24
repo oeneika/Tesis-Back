@@ -82,11 +82,11 @@ exports.saveNotification = async (req, res) => {
           res.status(500).send({ message: "Error al guardar la imagen" });
         } else {
           if (!notificationStored) {
-            res
+            return res
               .status(404)
               .send({ message: "La notificación no ha sido guardada" });
           } else {
-            res.status(200).send({ notification: notificationStored });
+            return res.status(200).send({ notification: notificationStored });
           }
         }
       });
