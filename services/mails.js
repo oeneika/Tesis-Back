@@ -6,8 +6,8 @@ exports.sendMail = async ({ email, html, subject }) => {
     port: 465,
     secure: true, // use TLS
     auth: {
-      user: "mauro@enlawawa.com",
-      pass: "enlawawa12",
+      user: "adeazevedo@androvent.com",
+      pass: "Febrero.1996",
     },
     tls: {
       // do not fail on invalid certs
@@ -17,7 +17,7 @@ exports.sendMail = async ({ email, html, subject }) => {
 
   // send mail with defined transport object
   let info = await transporter.sendMail({
-    from: "mauro@enlawawa.com", // sender address
+    from: '"Sistema de Videovigilancia" <adeazevedo@androvent.com>', // sender address
     to: email, // list of receivers
     subject: subject, // Subject line
     html: html,

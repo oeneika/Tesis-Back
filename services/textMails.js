@@ -1154,8 +1154,8 @@ exports.mailNotificationHtml = ({ name, nameCamera, date }) => {
                       <tr>
                         <td>
                          
-                          <p style="margin-top: 20px">Hemos detectado a <strong>${name}</strong>, quien pertenece al nivel 4 y es un considerada una amenaza en tu recinto.</p>
-                          <p><strong>Cámara:</strong> ${nameCamera}}</p>
+                          <p style="margin-top: 20px">Hemos detectado a <strong>${name}</strong>, quien pertenece al nivel 4 y es considerada una amenaza en tu recinto.</p>
+                          <p><strong>Cámara:</strong> ${nameCamera}</p>
                           <p><strong>Fecha y hora:</strong>${date}</p>
                           
                         </td>
