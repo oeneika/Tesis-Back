@@ -143,7 +143,8 @@ const login = async (req, res) => {
     var email = params.email;
     var password = params.password;
     // .toLowerCase()
-    User.findOne({ email: email }, (err, user) => {
+    console.log("adentro")
+    User.findOne({ email: email }, async (err, user) => {
       if (err) {
         res.status(500).send({
           message: "error al comprobar el usuario",
@@ -152,9 +153,10 @@ const login = async (req, res) => {
         // comprobación de si nos llega un usuario
         if (user) {
           // si existe el usuario lo devuelve
-          console.log(password, user.password);
-          if (bcrypt.compare(password, user.password)) {
+          let compare = await bcrypt.compare(password, user.password)
+          if (compare) {
             if (params.getToken) {
+              console.log(params.getToken);
               // devolver el token
               res.status(200).send({
                 token: jwt.createToken(user),
