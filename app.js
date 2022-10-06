@@ -16,9 +16,8 @@ const http = require("http").Server(app); //creamos un servidor http a partir de
 const serverPeerjs = require("http").Server(app);
 
 const io = require("socket.io")(http, {
-  //origin: process.env.FRONT_END_ORIGIN,
   cors: {
-    origin: "wss://sistema-videovigilancia-front.netlify.app",
+    origin: process.env.FRONT_END_ORIGIN,
     methods: ["GET", "POST"],
     transports: ["websocket", "polling"],
     credentials: true,
