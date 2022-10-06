@@ -20,10 +20,10 @@ const webpush = require('web-push');
 const sendNotifications = (req, res) => {
 
     const pushSubscription = {
-        endpoint: 'https://fcm.googleapis.com/fcm/send/fJWs7GK1Fr4:APA91bGCH2GYixJyL2sandVt1e15xiVRHDJLwgFltzh_NeV3jDk3uHwHNroLOh0l8ol7ymfLb4A0ijiIkXXXreTFGHrz9iVlVAXTXlCuDn_GXOcQNV8YMgzjyad9Plmf1HNnX8AysNio',
+        endpoint: 'https://fcm.googleapis.com/fcm/send/dHQWp85gOIY:APA91bG3uezKMMlYmUsuzTIC4FTkun3bZ9oI43HdI_wzNBx1mmS9BKX8yYH9v3mbs3qI8a2jhQ3gTEubcyFwHoTF7dEFzndz-OAKxuoCTEbqiTs275dGrFo_UWaSw5zldsFwS2_JR-z2',
         keys: {
-            auth: 'UbAi7d24uU7WkMZf1yj3tw',
-            p256dh: 'BNQ6GObmIZ6vrK1NnC9u1eNC6Jx5wUIl819MftNq7_1vUqSUvmpLW6Bk2QsYteZ5QWEU2KoNyhC_tzff_DjL24M'
+            auth: '8ZFrj8fhemAIn9bUC1xsoA',
+            p256dh: 'BNk5lvjblCVpjlmsnd4gwck2rqFvbrz-40uGzAhet7Dz4sWLsYAWJQZcHBqBcuI0sJhdx5VgbBZ8DfgvQEAwl4U'
         }
     };
 
