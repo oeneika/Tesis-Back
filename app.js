@@ -120,7 +120,10 @@ var hostedServer = serverPeerjs.listen(process.env.PEERJS_PORT, () => {
 
 //var hostedServer = serverPeerjs.listen();
 
-const peerServer = ExpressPeerServer(hostedServer,{debug:true});
+const peerServer = ExpressPeerServer(hostedServer, {
+  debug: true,
+  path: '/peerjs'
+});
 peerServer.on('connection', (client) => {console.log("clientito123",client)});
 
 app.use("/peerjs", peerServer);
