@@ -14,6 +14,7 @@ initialSetup.createConfidenceLevel();
 const { ExpressPeerServer } = require("peer");
 const http = require("http").Server(app); //creamos un servidor http a partir de la libreria express
 const serverPeerjs = require("http").Server(app);
+var webpush = require("web-push");
 
 const io = require("socket.io")(http, {
   cors: {
@@ -39,6 +40,7 @@ var google_drive = require("./routes/googleDrive");
 var user_camera = require("./routes/user_camera");
 var face_image = require("./routes/face_image");
 var face_camera = require("./routes/face_camera");
+var push_notifications = require("./routes/push_notifications");
 
 // middlewares de body-parser
 
@@ -77,6 +79,7 @@ app.use("/api", google_drive);
 app.use("/api", user_camera);
 app.use("/api", face_image);
 app.use("/api", face_camera);
+app.use("/api", push_notifications);
 
 
 io.on("connection", (socket) => {
