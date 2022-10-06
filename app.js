@@ -113,7 +113,7 @@ io.on("connection", (socket) => {
   });
 });
 
-console.log("prueba");
+console.log("prueba peer");
 var hostedServer = serverPeerjs.listen(process.env.PEERJS_PORT, () => {
   console.log(`Peerjs server running on portobello: ${process.env.PEERJS_PORT}`);
 });
