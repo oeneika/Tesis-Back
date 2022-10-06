@@ -51,7 +51,7 @@ const sendNotifications = (req, res) => {
             console.log('Error', err);
         })
 
-    res.send({ data: 'Push enviada exitosamente' })
+    res.send({ data: 'Push enviada exitosamente :D' })
 
 }
 
