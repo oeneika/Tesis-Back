@@ -18,7 +18,7 @@ var webpush = require("web-push");
 
 const io = require("socket.io")(http, {
   cors: {
-    origin: process.env.FRONT_END_ORIGIN,
+    origin: [process.env.FRONT_END_ORIGIN, 'http://localhost:4200'],
     methods: ["GET", "POST"],
     transports: ["websocket", "polling"],
     credentials: true,
