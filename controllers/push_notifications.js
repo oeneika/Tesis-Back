@@ -11,7 +11,7 @@ const webpush = require('web-push');
   }
   
   webpush.setVapidDetails(
-    'mailto:example@yourdomain.org',
+    'mailto:example@sistema-videovigilancia-front.netlify.app',
     vapidKeys.publicKey,
     vapidKeys.privateKey
   );
