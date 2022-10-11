@@ -91,7 +91,7 @@ io.on("connection", (socket) => {
     socket.to(roomName).emit("bye-user ", data);
     setTimeout(() => {
       socket.leave(roomName);
-    }, 1000);
+    }, 3000);
   });
   socket.on("join", (data) => {
     const roomName = data.roomName;
@@ -103,13 +103,12 @@ io.on("connection", (socket) => {
     const roomName = data.roomName;
     console.log("notificando al cuarto ", roomName, ' - ', id_handshake);
     const leaving = data.message.findIndex(msj => msj.imDone) >= 0;
+    socket.to(roomName).emit("message", data);
     if (leaving) {
       socket.to(roomName).emit("bye-user ", data);
       setTimeout(() => {
         socket.leave(roomName);
-      }, 1000);
-    } else {
-      socket.to(roomName).emit("message", data);
+      }, 3000);
     }
   });
   socket.on("get-rooms", (data) => {
