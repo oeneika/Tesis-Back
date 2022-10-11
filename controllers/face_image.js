@@ -10,6 +10,7 @@ const path = require("path");
 const fs = require("fs");
 const { sendMail } = require("../services/mails");
 const { mailNotificationHtml } = require("../services/textMails");
+const { pushNotifications } = require("./push_notifications");
 
 exports.getFaceImages = async (req, res) => {
   try {
@@ -71,7 +72,6 @@ saveNotification = async (faceId, req, imageId) => {
   try {
     const face = await FaceModel.findById(faceId).populate("confidenceLevels");
     const image = await ImageModel.findById(imageId).populate("camera");
-
     const user = await UserModel.findById(req.body.user);
 
     let cameraId = image?.camera;
