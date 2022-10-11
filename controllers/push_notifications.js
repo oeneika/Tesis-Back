@@ -18,16 +18,13 @@ const webpush = require('web-push');
 
 
 const sendNotifications = (req, res) => {
-
     const pushSubscription = {
-        endpoint: 'https://fcm.googleapis.com/fcm/send/dKegcieFu2Y:APA91bF0iPYE998eBNu7XTxFwxuld9hC5Q9LVHnbq2TjgmuPl-odZSnxTPKfmM6PSvPRgC0Q5TULcCWnNyGf7RsjMec7OCXRYoXHytmwpJzcLYUGHFcQGwNfRrTXxomkIo0jAtCf-8Mr',
+        endpoint: req.body.endpoint,
         keys: {
-            auth: 'zABBFLWDpBoXbUA6N9_Cew',
-            p256dh: 'BLjgPWxijTvmnfh-1uhfvx0qWr9slj3Av6sCtVKj5bXv50hgBEElNGndrKlPlhhMcOo5OU_cP7WdnHt9ywIKfMM'
+            auth: req.body.auth,
+            p256dh: req.body.p256dh
         }
     };
-
-    
 
     const payload = {
         "notification": {
