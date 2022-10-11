@@ -11,13 +11,14 @@ const webpush = require('web-push');
   }
   
   webpush.setVapidDetails(
-    'mailto:example@sistema-videovigilancia-front.netlify.app',
+    'mailto:contacto@oeneika.com',
     vapidKeys.publicKey,
     vapidKeys.privateKey
   );
 
 
 const sendNotifications = (req, res) => {
+    console.log(req.body);
     const pushSubscription = {
         endpoint: req.body.endpoint,
         keys: {
