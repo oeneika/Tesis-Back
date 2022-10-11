@@ -102,7 +102,15 @@ io.on("connection", (socket) => {
   socket.on("message", (data) => {
     const roomName = data.roomName;
     console.log("notificando al cuarto ", roomName, ' - ', id_handshake);
-    socket.to(roomName).emit("message", data);
+    const leaving = data.message.findIndex(msj => msj.imDone) >= 0;
+    if (leaving) {
+      socket.to(roomName).emit("bye-user ", data);
+      setTimeout(() => {
+        socket.leave(roomName);
+      }, 1000);
+    } else {
+      socket.to(roomName).emit("message", data);
+    }
   });
   socket.on("get-rooms", (data) => {
     console.log('f yeah ', data, ' - ', id_handshake);
