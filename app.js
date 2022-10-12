@@ -111,6 +111,11 @@ io.on("connection", (socket) => {
       }, 3000);
     }
   });
+  socket.on("push", (data) => {
+    const roomName = data.roomName;
+    console.log("requiriendo notificación push ", roomName, ' - ', id_handshake);
+    socket.to(roomName).emit("push", data);
+  });
   socket.on("get-rooms", (data) => {
     console.log('f yeah ', data, ' - ', id_handshake);
     if (data.joinRoom) {
