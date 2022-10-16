@@ -111,6 +111,11 @@ io.on("connection", (socket) => {
       }, 3000);
     }
   });
+  socket.on("manageCamera", (data) => {
+    const roomName = data.roomName;
+    console.log("controlando remotamente camara", roomName, ' - ', id_handshake);
+    socket.to(roomName).emit("manageCamera", data);
+  });
   socket.on("push", (data) => {
     const roomName = data.roomName;
     console.log("requiriendo notificación push ", roomName, ' - ', id_handshake);
