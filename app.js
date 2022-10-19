@@ -129,7 +129,7 @@ io.on("connection", (socket) => {
     socket.to(data.cameraId).emit('retrieve-rooms', data);
   });
   socket.on("disconnect", () => {
-    console.log("saliendo de la llamada: ", id_handshake);
+    console.log("saliendo de la llamada:  ", id_handshake);
   });
 });
 
