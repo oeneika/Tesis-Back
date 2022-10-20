@@ -33,3 +33,5 @@ exports.ensureAuth = function (req, res, next) {
 
 	next();
 };
+
+//Desarrollado por Vladimir B. y Alexander D.
