@@ -111,7 +111,7 @@ saveNotification = async (faceId, req, imageId) => {
                     nameCamera: image.camera.name,
                     date: moment(new Date()),
                   }),
-                  subject: "Notificación de usuario desconocido",
+                  subject: "Alerta de amenaza",
                 });
               }
             }
